@@ -92,5 +92,36 @@ class Graph(object):
                     return True
         return False
 
+    def cyclic(self):
+        """Return True if the directed graph has a cycle.
+        The graph must be represented as a dictionary mapping vertices to
+        iterables of neighbouring vertices. For example:
+
+        >>> cyclic({1: (2,), 2: (3,), 3: (1,)})
+        True
+        >>> cyclic({1: (2,), 2: (3,), 3: (4,)})
+        False
+
+        """
+        visited = set()
+        path = [object()]
+        path_set = set(path)
+        stack = [iter(self.AdjacencyList)]
+        while stack:
+            for v in stack[-1]:
+                if v in path_set:
+                    return True
+                elif v not in visited:
+                    visited.add(v)
+                    path.append(v)
+                    path_set.add(v)
+                    stack.append(iter(self.AdjacencyList[v].outList))
+                    break
+            else:
+                path_set.remove(path.pop())
+                stack.pop()
+        return False
+
 grafo = Graph()
-print(grafo.isCyclic())
+# print(grafo.isCyclic())
+print(grafo.cyclic() == grafo.isCyclic())
