@@ -67,15 +67,15 @@ class Graph(object):
     def helper(self, ver, visited, recStack):
         if ver in self.AdjacencyList[ver].outList:
             return True
-        visited.append(ver)
         if ver in recStack:
             return True
+        recStack.append(ver)
         for i in self.AdjacencyList[ver].outList:
             if i not in visited:
                 if self.helper(i, visited, recStack):
                     return True
-
-            recStack.append(i)
+                recStack.pop()
+        visited.append(ver)
         return False
 
     def isCyclic(self):
@@ -91,7 +91,6 @@ class Graph(object):
                 if self.helper(u, visited, recStack):
                     return True
         return False
-
 
 grafo = Graph()
 print(grafo.isCyclic())
